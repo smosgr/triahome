@@ -239,3 +239,174 @@ The core question for each build iteration is:
 > Can Tria take a real property problem that a non-expert does not understand and safely move it closer to resolution with less unnecessary human intervention?
 
 If the answer becomes consistently yes, dashboards, integrations, voice channels, retailer integrations and professional workflows can be built around that engine.
+
+
+## Development
+
+### Prerequisites
+
+The current Tria Home backend requires:
+
+- Python 3.11
+- `pip`
+- a Python virtual environment
+
+The project should be developed and run from within its virtual environment rather than using the system Python installation.
+
+### Initial setup
+
+Clone the repository and move into the project directory:
+
+```bash
+git clone https://github.com/smosgr/triahome.git
+cd Triahome
+```
+
+Create the virtual environment using Python 3.11:
+
+```bash
+python3.11 -m venv .venv
+```
+
+Activate it:
+
+```bash
+source .venv/bin/activate
+```
+
+Install the project dependencies:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Verify that the correct Python environment is active:
+
+```bash
+python3 --version
+which python3
+```
+
+The Python path should point inside the project:
+
+```text
+.../Triahome/.venv/bin/python3
+```
+
+### Testing
+
+Automated tests are part of the normal Tria Home development workflow.
+
+**Tests should be run before running/building the application and before committing significant changes.**
+
+Run the complete test suite with:
+
+```bash
+python3 -m pytest
+```
+
+Use `python3 -m pytest` rather than calling `pytest` directly. This ensures pytest runs using the Python interpreter from the active virtual environment rather than a globally installed version.
+
+A successful run currently looks similar to:
+
+```text
+tests/test_main.py ..                                  [100%]
+
+2 passed
+```
+
+If any test fails, fix the failure before proceeding.
+
+To run a specific test file:
+
+```bash
+python3 -m pytest tests/test_main.py
+```
+
+### Build
+
+There is currently no separate compilation or packaging step for the V0.1 Python backend.
+
+At this stage, the effective development validation step is:
+
+```bash
+python3 -m pytest
+```
+
+As the project grows, build, linting, type-checking and dependency-management commands will be added here and automated through CI.
+
+### Run locally
+
+First activate the virtual environment if it is not already active:
+
+```bash
+source .venv/bin/activate
+```
+
+Run the tests:
+
+```bash
+python3 -m pytest
+```
+
+Only after the tests pass, start the development server:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+The API will be available at:
+
+```text
+http://127.0.0.1:8000
+```
+
+Health check:
+
+```text
+http://127.0.0.1:8000/health
+```
+
+Interactive API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+Stop the development server with:
+
+```text
+Ctrl+C
+```
+
+### Development workflow
+
+The expected local workflow is:
+
+```text
+Activate environment
+        ↓
+Make changes
+        ↓
+Add/update tests
+        ↓
+python3 -m pytest
+        ↓
+Tests pass?
+   ├── No → fix and test again
+   └── Yes
+        ↓
+Run application
+        ↓
+Manual verification where appropriate
+        ↓
+Commit
+```
+
+Do not commit `.venv`, `.env`, local secrets, Python cache files, or other machine-specific files.
+
+### Dependency management
+
+The project currently uses `requirements.txt`.
+
+As the dependency set grows, Tria Home will move towards explicit dependency and version management using `pyproject.toml` together with a lock file. This will allow direct dependencies to be distinguished from transitive dependencies and make automated dependency updates and reproducible builds easier.
