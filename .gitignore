@@ -1,5 +1,6 @@
 .DS_Store
 .venv/
+.env
 app/__pycache__
 
 # Python cache
