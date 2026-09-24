@@ -23,7 +23,7 @@ def diagnose():
         "problem": {
             "category": "plumbing",
             "summary": "Leak from the waste pipe connection under the sink",
-            "confidence": 0.92,
+            "confidence": 0.2,
         },
         "safety": {
             "risk_level": "low",
