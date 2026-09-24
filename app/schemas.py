@@ -3,6 +3,13 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 
+class DiagnosisRequest(BaseModel):
+    description: str = Field(
+        min_length=3,
+        max_length=2000,
+    )
+
+
 class Problem(BaseModel):
     category: str
     summary: str

@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
-from app.schemas import DiagnosisResponse
+from app.ai import is_property_issue
+from app.schemas import DiagnosisRequest, DiagnosisResponse
 
 app = FastAPI(
     title="Triahome API",
@@ -18,8 +19,14 @@ def health_check():
 
 
 @app.post("/diagnose", response_model=DiagnosisResponse)
-def diagnose():
-    return {
+def diagnose(request: DiagnosisRequest):
+        if not is_property_issue(request.description):
+            raise HTTPException(
+            status_code=400,
+            detail="Description is outside Tria Home's property repair scope.",
+        )
+
+        return {
         "problem": {
             "category": "plumbing",
             "summary": "Leak from the waste pipe connection under the sink",
