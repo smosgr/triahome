@@ -162,3 +162,96 @@ def test_repair_case_response_has_evidence_list():
     assert "evidence" in data
     assert isinstance(data["evidence"], list)
     assert data["evidence"] == []
+
+
+def test_get_repair_case():
+    create_response = client.post(
+        "/cases",
+        json={
+            "description": "The pipe under my kitchen sink is leaking."
+        },
+    )
+
+    assert create_response.status_code == 201
+
+    created_case = create_response.json()
+    case_id = created_case["id"]
+
+    get_response = client.get(f"/cases/{case_id}")
+
+    assert get_response.status_code == 200
+    assert get_response.json() == created_case
+
+
+def test_add_text_evidence_to_repair_case():
+    create_response = client.post(
+        "/cases",
+        json={
+            "description": "The pipe under my kitchen sink is leaking."
+        },
+    )
+
+    assert create_response.status_code == 201
+
+    case_id = create_response.json()["id"]
+
+    evidence_response = client.post(
+        f"/cases/{case_id}/evidence",
+        json={
+            "type": "text",
+            "content": "The leak only happens when the washing machine drains."
+        },
+    )
+
+    assert evidence_response.status_code == 201
+
+    evidence = evidence_response.json()
+
+    assert evidence["type"] == "text"
+    assert evidence["content"] == (
+        "The leak only happens when the washing machine drains."
+    )
+    assert "id" in evidence
+    assert evidence["id"]
+
+
+def test_text_evidence_is_saved_to_repair_case():
+    # Create a Repair Case
+    create_response = client.post(
+        "/cases",
+        json={
+            "description": "The pipe under my kitchen sink is leaking."
+        },
+    )
+
+    assert create_response.status_code == 201
+    case_id = create_response.json()["id"]
+
+    # Add text evidence
+    evidence_response = client.post(
+        f"/cases/{case_id}/evidence",
+        json={
+            "type": "text",
+            "content": "The leak only happens when the washing machine drains."
+        },
+    )
+
+    assert evidence_response.status_code == 201
+
+    # Retrieve the Repair Case again
+    get_response = client.get(f"/cases/{case_id}")
+
+    assert get_response.status_code == 200
+
+    repair_case = get_response.json()
+
+    # Confirm the evidence was stored
+    assert len(repair_case["evidence"]) == 1
+
+    evidence = repair_case["evidence"][0]
+
+    assert evidence["type"] == "text"
+    assert evidence["content"] == (
+        "The leak only happens when the washing machine drains."
+    )
+    assert evidence["id"]
