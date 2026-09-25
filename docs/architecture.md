@@ -62,7 +62,7 @@ FastAPI Backend
       │
       ├── validate request
       ├── check property-repair scope
-      ├── store / manage evidence
+      └── receive / manage evidence
       │
       ▼
 AI Diagnostic Service
@@ -248,8 +248,7 @@ The current implementation establishes the basic:
 - request validation;
 - property scope checking;
 - structured response models;
-- deterministic diagnostic behaviour;
-- automated testing.
+- deterministic diagnostic behaviour.
 
 The mock diagnostic logic allows these foundations to be developed without introducing AI model cost, variability or external dependencies too early.
 
@@ -293,11 +292,10 @@ As Tria develops:
 6. **Keep Tria within its property-repair scope.**
 7. **Avoid unnecessary model calls and token usage.**
 8. **Keep components replaceable where practical.**
-9. **Add automated tests alongside behavioural changes.**
-10. **Do not add architectural complexity until it solves a real problem.**
+9. **Do not add architectural complexity until it solves a real problem.**
 
 
-## Evolution
+## Planned Evolution
 
 The architecture will expand incrementally as V0.1 develops.
 

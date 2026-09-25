@@ -132,7 +132,7 @@ Implement the change
 Run the complete test suite
         ↓
 Tests pass?
-   ├── No → fix and test again
+   ├── No → Fix and test again
    └── Yes
         ↓
 Run and manually verify where appropriate
@@ -221,7 +221,7 @@ Add/update tests
 python3 -m pytest
         ↓
 Tests pass?
-   ├── No → fix and test again
+   ├── No → Fix and test again
    └── Yes
         ↓
 Run application
@@ -229,6 +229,8 @@ Run application
 Manual verification where appropriate
         ↓
 Check Git changes
+        ↓
+Stage intended files
         ↓
 Commit
         ↓
@@ -250,10 +252,17 @@ python3 -m pytest
 git status
 ```
 
-Review the files being committed before staging them:
+Review the changes and stage only the files that should be included in the commit:
 
 ```bash
-git add .
+git add <files-you-want-to-commit>
+git status
+```
+
+For example:
+
+```bash
+git add README.md docs/
 git status
 ```
 
@@ -263,6 +272,8 @@ Then commit and push:
 git commit -m "Describe the change"
 git push
 ```
+
+Using `git add .` is acceptable when intentionally staging all current changes, but reviewing and staging the intended files explicitly reduces the risk of accidentally committing local files or unrelated changes.
 
 
 ## Files That Must Not Be Committed
@@ -287,6 +298,8 @@ git status
 
 before committing.
 
+Environment configuration that needs to be shared with other developers should eventually be represented by a safe template such as `.env.example`, containing variable names and example values but no real secrets.
+
 
 ## Project Structure
 
@@ -307,14 +320,20 @@ Triahome/
 │
 ├── static/
 ├── templates/
+│
 ├── docs/
-├── .env
+│   ├── architecture.md
+│   ├── development.md
+│   └── product.md
+│
 ├── .gitignore
 ├── README.md
 └── requirements.txt
 ```
 
-The structure will evolve as the application grows. Avoid introducing additional architectural layers until they solve a concrete problem in the developing application.
+The structure will evolve as the application grows.
+
+Avoid introducing additional architectural layers until they solve a concrete problem in the developing application.
 
 
 ## Dependency Management
@@ -327,7 +346,7 @@ requirements.txt
 
 This is sufficient for the early V0.1 development phase.
 
-As the dependency set grows, Tria Home should move towards explicit dependency and version management using:
+The planned next step is to move towards explicit dependency and version management using:
 
 ```text
 pyproject.toml
