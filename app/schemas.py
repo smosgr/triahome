@@ -58,3 +58,17 @@ class DiagnosisResponse(BaseModel):
     resolution: Resolution
     parts: list[Part] = []
     steps: list[RepairStep] = []
+
+
+class RepairCaseCreate(BaseModel):
+    description: str = Field(
+        min_length=3,
+        max_length=2000,
+    )
+
+
+class RepairCase(BaseModel):
+    id: str
+    description: str
+    status: Literal["new"]
+    evidence: list = Field(default_factory=list)

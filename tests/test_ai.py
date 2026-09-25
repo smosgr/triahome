@@ -1,9 +1,6 @@
 from app.ai import is_property_issue, diagnose_property_issue
 
 
-from app.ai import is_property_issue
-
-
 def test_property_issue_gate_accepts_plumbing_problem():
     assert is_property_issue(
         "The pipe under my kitchen sink is leaking."

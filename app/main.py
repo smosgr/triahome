@@ -1,7 +1,13 @@
 from fastapi import FastAPI, HTTPException
+from uuid import uuid4
 
 from app.ai import is_property_issue, diagnose_property_issue
-from app.schemas import DiagnosisRequest, DiagnosisResponse
+from app.schemas import (
+    DiagnosisRequest,
+    DiagnosisResponse,
+    RepairCase,
+    RepairCaseCreate,
+)
 
 app = FastAPI(
     title="Triahome API",
@@ -27,3 +33,13 @@ def diagnose(request: DiagnosisRequest):
         )
 
     return diagnose_property_issue(request.description)
+
+
+@app.post("/cases", response_model=RepairCase, status_code=201)
+def create_repair_case(request: RepairCaseCreate):
+    return RepairCase(
+        id=str(uuid4()),
+        description=request.description,
+        status="new",
+        evidence=[],
+    )

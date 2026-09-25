@@ -96,3 +96,23 @@ def test_diagnose_rejects_out_of_scope_description():
     )
 
     assert response.status_code == 400
+
+def test_create_repair_case():
+    response = client.post(
+        "/cases",
+        json={
+            "description": "The pipe under my kitchen sink is leaking."
+        },
+    )
+
+    assert response.status_code == 201
+
+    data = response.json()
+
+    assert data["description"] == (
+        "The pipe under my kitchen sink is leaking."
+    )
+    assert data["status"] == "new"
+    assert data["evidence"] == []
+    assert "id" in data
+    assert data["id"]
