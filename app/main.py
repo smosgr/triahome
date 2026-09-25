@@ -37,6 +37,12 @@ def diagnose(request: DiagnosisRequest):
 
 @app.post("/cases", response_model=RepairCase, status_code=201)
 def create_repair_case(request: RepairCaseCreate):
+    if not is_property_issue(request.description):
+        raise HTTPException(
+            status_code=400,
+            detail="Description is outside Tria Home's property repair scope.",
+        )
+
     return RepairCase(
         id=str(uuid4()),
         description=request.description,

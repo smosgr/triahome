@@ -116,3 +116,32 @@ def test_create_repair_case():
     assert data["evidence"] == []
     assert "id" in data
     assert data["id"]
+
+
+def test_create_repair_case_rejects_missing_description():
+    response = client.post(
+        "/cases",
+        json={},
+    )
+
+    assert response.status_code == 422
+
+
+def test_create_repair_case_rejects_missing_description():
+    response = client.post(
+        "/cases",
+        json={},
+    )
+
+    assert response.status_code == 422
+
+
+def test_create_repair_case_rejects_out_of_scope_description():
+    response = client.post(
+        "/cases",
+        json={
+            "description": "Can you write a CV for me?"
+        },
+    )
+
+    assert response.status_code == 400
