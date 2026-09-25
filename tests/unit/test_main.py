@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-
 from app.main import app
 
 
@@ -116,6 +115,8 @@ def test_create_repair_case():
     assert data["evidence"] == []
     assert "id" in data
     assert data["id"]
+    assert "created_at" in data
+    assert data["created_at"]
 
 
 def test_create_repair_case_rejects_missing_description():

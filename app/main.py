@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from uuid import uuid4
+from datetime import datetime, timezone
 from app.ai import is_property_issue, diagnose_property_issue
 
 from app.cases import (
@@ -55,10 +56,11 @@ def create_repair_case(request: RepairCaseCreate):
         id=str(uuid4()),
         description=request.description,
         status="new",
+        created_at=datetime.now(timezone.utc),
         evidence=[],
     )
 
-    return save_repair_case( repair_case)
+    return save_repair_case(repair_case)
 
 
 @app.get("/cases/{case_id}", response_model=RepairCase)

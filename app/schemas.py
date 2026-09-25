@@ -1,5 +1,5 @@
 from typing import Literal
-
+from datetime import datetime
 from pydantic import BaseModel, Field
 
 
@@ -73,22 +73,17 @@ class Evidence(BaseModel):
     content: str
 
 
-class RepairCase(BaseModel):
-    id: str
-    description: str
-    status: Literal["new"]
-    evidence: list[Evidence] = Field(default_factory=list)
-
-
-class Evidence(BaseModel):
-    id: str
-    type: Literal["text", "image"]
-    content: str
-
-
 class EvidenceCreate(BaseModel):
     type: Literal["text"]
     content: str = Field(
         min_length=1,
         max_length=2000,
     )
+
+
+class RepairCase(BaseModel):
+    id: str
+    description: str
+    status: Literal["new"]
+    created_at: datetime
+    evidence: list[Evidence] = Field(default_factory=list)
