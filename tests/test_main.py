@@ -145,3 +145,20 @@ def test_create_repair_case_rejects_out_of_scope_description():
     )
 
     assert response.status_code == 400
+
+
+def test_repair_case_response_has_evidence_list():
+    response = client.post(
+        "/cases",
+        json={
+            "description": "The pipe under my kitchen sink is leaking."
+        },
+    )
+
+    assert response.status_code == 201
+
+    data = response.json()
+
+    assert "evidence" in data
+    assert isinstance(data["evidence"], list)
+    assert data["evidence"] == []

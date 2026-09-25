@@ -67,8 +67,14 @@ class RepairCaseCreate(BaseModel):
     )
 
 
+class Evidence(BaseModel):
+    id: str
+    type: Literal["text", "image"]
+    content: str
+
+
 class RepairCase(BaseModel):
     id: str
     description: str
     status: Literal["new"]
-    evidence: list = Field(default_factory=list)
+    evidence: list[Evidence] = Field(default_factory=list)
