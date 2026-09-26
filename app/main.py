@@ -1,28 +1,39 @@
-from fastapi import FastAPI, HTTPException
-from uuid import uuid4
 from datetime import datetime, timezone
-from app.ai import is_property_issue, diagnose_property_issue
+from uuid import uuid4
 
+from fastapi import FastAPI, HTTPException
+
+from app.ai import diagnose_property_issue, is_property_issue
 from app.cases import (
     add_evidence,
     get_repair_case,
     save_repair_case,
 )
-
+from app.database import engine
+from app.models import Base
 from app.schemas import (
     DiagnosisRequest,
     DiagnosisResponse,
-    RepairCase,
-    RepairCaseCreate,
     Evidence,
     EvidenceCreate,
+    RepairCase,
+    RepairCaseCreate,
 )
 
-app = FastAPI(
-    title="Triahome API",
-    description="AI-powered home repair triage",
-    version="0.1.0",
-)
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI()
+
+# app = FastAPI(
+#     title="Triahome API",
+#     description="AI-powered home repair triage",
+#     version="0.1.0",
+# )
 
 
 @app.get("/health")
