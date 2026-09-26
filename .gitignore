@@ -6,3 +6,7 @@ app/__pycache__
 # Python cache
 __pycache__/
 *.py[cod]
+
+
+# Local application data
+data/
